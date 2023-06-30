@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import datetime
 from django.template import Template, Context, loader
-from inicio.models import Perro
-from django.shortcuts import render
+from inicio.models import Cliente
+from django.shortcuts import render, redirect
+from inicio.form import Crearclienteformulario, buscarclienteformulario
 # v1
 # def inicio(request):
 #     return  HttpResponse("hola soy tu inicio")
@@ -42,6 +43,17 @@ def inicio(request):
     return render(request,"inicio/inicio.html")
 def prueba(request):
     
+    
+    segundos = datetime.now().second
+    diccionario={
+        "mensaje": "este es el mensaje de inicio",
+        "segundos" : segundos ,
+        "segundos_par": segundos%2 == 0 ,
+        "segundo_redondo":segundos %10 == 0 ,
+        "listado_segundos": list(range(25))
+    }
+    return render(request, "inicio/prueba.html", diccionario)
+
     segundos = datetime.now().second
     diccionario={
         "mensaje": "este es el mensaje de inicio",
@@ -81,11 +93,30 @@ def bienvenido(request, nombre , apellido):
 #     renderizar_template= template.render(diccionario)
 #     return HttpResponse(renderizar_template)
 
-def crear_perro(request, nombre , edad):
-    perro= Perro(nombre= nombre, edad= edad)
-    perro.save()
+def crear_cliente(request):
+    # print(request.POST)
     
-    diccionario={
-        "perro": perro
-    }
-    return render(request, "inicio/crear_perro.html", diccionario)
+    if request.method == "POST":
+        formulario = Crearclienteformulario(request.POST)
+        if formulario.is_valid():
+            info= formulario.cleaned_data
+            cliente= Cliente (nombre=info["nombre"], edad=info["edad"], nacionalidad=info["nacionalidad"])
+            cliente.save()
+            
+            return redirect( "lista_de_clientes")
+        else:
+            return render(request, "inicio/crear_cliente.html", {"formulario": formulario})
+            
+            
+    formulario = Crearclienteformulario()
+    return render(request, "inicio/crear_cliente.html",  {"formulario": formulario})
+
+def lista_de_clientes(request):
+     formulario=buscarclienteformulario(request.GET)
+     if formulario.is_valid():
+            buscar_nombre= formulario.cleaned_data["nombre"]
+            listado_de_clientes= Cliente.objects.filter(nombre__icontains=buscar_nombre)
+     
+     formulario=buscarclienteformulario()
+     print(buscar_nombre)
+     return render(request, "inicio/lista_de_clientes.html",{"formulario": formulario,"clientes": listado_de_clientes})

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>clientes</title>
+{% endblock  %}
+
+{% block h1_header %}
+lista de clientes
+{% endblock h1_header %}
+
+{% block contenido %}
+<button>
+    <a class="navbar-brand" href={% url 'craer_cliente' %}>crear cliente</a>
+</button>
+<form action="" method="get">
+    {{formulario}}
+    <button>buscar</button>
+</form>
+{% if  clientes%}
+{% for cliente in clientes %}
+<li>Nombre: {{cliente.nombre}} Edad: {{cliente.edad}} Nacionalida: {{cliente.nacionalidad}} </li>
+{% endfor %}
+{% else %}
+<p>no existe ese cliente</p>
+{% endif %}
+
+{% endblock contenido %}

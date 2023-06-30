@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>crear cliente</title>
+{% endblock  %}
+
+{% block h1_header %}
+cliente
+{% endblock h1_header %}
+
+{% block contenido %}
+{% comment %} {% if cliente %}
+<h2>se creo un cliente {{cliente.nombre}} que tiene {{cliente.edad}} años y su nacionalidad es {{cliente.nacionalidad}} </h2> {% endcomment %}
+<form action="" method="POST">
+    {% csrf_token %}
+   {% comment %} <p>
+        Nombre:
+       <input type="text" name= "nombre">
+   </p>
+   <p>
+        Edad:
+       <input type="number" name= "edad">
+   </p>
+   <p>
+        Nacionalidad:
+       <input type="text" name= "nacionalidad">
+   </p> {% endcomment %}
+   {{formulario}}
+   <button>guardar</button> 
+</form>
+{% endblock contenido %}
