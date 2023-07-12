@@ -18,7 +18,12 @@ lista de clientes
 </form>
 {% if  clientes%}
 {% for cliente in clientes %}
-<li>Nombre: {{cliente.nombre}} Edad: {{cliente.edad}} Nacionalida: {{cliente.nacionalidad}} </li>
+<li>
+    
+    {{cliente}}
+    <a href={% url 'eliminar_cliente' cliente.id %}>Eliminar</a>
+    <a href={% url 'modificar_cliente' cliente.id %}>modificar</a>
+</li>
 {% endfor %}
 {% else %}
 <p>no existe ese cliente</p>

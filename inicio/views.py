@@ -4,7 +4,7 @@ from datetime import datetime
 from django.template import Template, Context, loader
 from inicio.models import Cliente
 from django.shortcuts import render, redirect
-from inicio.form import Crearclienteformulario, buscarclienteformulario
+from inicio.form import Crearclienteformulario, buscarclienteformulario, modificarclienteformulario
 # v1
 # def inicio(request):
 #     return  HttpResponse("hola soy tu inicio")
@@ -120,3 +120,30 @@ def lista_de_clientes(request):
      formulario=buscarclienteformulario()
      print(buscar_nombre)
      return render(request, "inicio/lista_de_clientes.html",{"formulario": formulario,"clientes": listado_de_clientes})
+
+def eliminar_cliente(request, cliente_id):
+    
+    cliente= Cliente.objects.get(id=cliente_id)
+    cliente.delete()
+   
+    return redirect( "lista_de_clientes") 
+
+def modificar_cliente(request, cliente_id):
+    cliente_a_modificar= Cliente.objects.get(id=cliente_id)
+   
+    if request.method == "POST":
+        formulario= modificarclienteformulario(request.POST)
+        if formulario.is_valid():
+            info= formulario.cleaned_data
+            cliente_a_modificar.nombre= info ["nombre"]
+            cliente_a_modificar.edad= info ["edad"]
+            cliente_a_modificar.nacionalidad= info ["nacionalidad"]
+            cliente_a_modificar.save()
+            return redirect("lista_de_clientes")
+       
+        else:
+            return render(request, "inicio/modificar_cliente.html" , {"formulario": formulario})
+    initial_data={"nombre": cliente_a_modificar.nombre, "edad": cliente_a_modificar.edad, "nacionalidad":cliente_a_modificar.nacionalidad}
+    formulario= modificarclienteformulario(initial= initial_data)
+    
+    return render(request, "inicio/modificar_cliente.html",{"formulario": formulario})
