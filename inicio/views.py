@@ -9,7 +9,8 @@ from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 def inicio(request):
     return render(request,"inicio/inicio.html")
 def prueba(request):
@@ -40,7 +41,7 @@ def prueba(request):
 def segunda_vista(request):
     return HttpResponse("<h1>soy la segunda vista</h1>")
 
-
+@login_required
 def fecha_de_hoy(request):
     fecha= datetime.now()
     return HttpResponse(f"fecha actual {fecha}")
@@ -59,7 +60,7 @@ def bienvenido(request, nombre , apellido):
     return render(request, "inicio/crear_cliente.html",  {"formulario": formulario})
 
 
-class CrearCliente(CreateView):
+class CrearCliente(CreateView,LoginRequiredMixin):
     model= Cliente
     template_name= "inicio/CBV/crear_cliente_CBV.html"
     fields= ["nombre", "edad", "nacionalidad", "descripcion"]
@@ -70,13 +71,13 @@ class Listaclientes(ListView):
     template_name = "inicio/CBV/lista_de_cliente_CBV.html"
     context_object_name="clientes"
     
-class ModificarCliente(UpdateView):
+class ModificarCliente(LoginRequiredMixin,UpdateView):
     model = Cliente
     template_name = "inicio/CBV/modificar_cliente_CBV.html"
     fields= ["nombre", "edad", "nacionalidad", "descripcion"]
     success_url= reverse_lazy("lista_de_clientes")
 
-class Eliminarcliente(DeleteView):
+class Eliminarcliente(LoginRequiredMixin,DeleteView):
     model = Cliente
     template_name = "inicio/CBV/eliminar_cliente_CBV.html"
     success_url= reverse_lazy("lista_de_clientes")
@@ -85,3 +86,5 @@ class Descripciondelcliente(DetailView):
     model = Cliente
     template_name = "inicio/CBV/descripcion_del_cliente_CBV.html"
     
+# def login(request):
+#     return render(request,"template", {})    
