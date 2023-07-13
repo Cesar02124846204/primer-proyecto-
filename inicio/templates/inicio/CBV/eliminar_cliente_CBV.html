@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>Eliminar cliente</title>
+{% endblock  %}
+
+{% block h1_header %}
+eliminar cliente
+{% endblock h1_header %}
+
+{% block contenido %}
+{% comment %} {% if cliente %}
+<h2>se creo un cliente {{cliente.nombre}} que tiene {{cliente.edad}} años y su nacionalidad es {{cliente.nacionalidad}} </h2> {% endcomment %}
+<form action={% url 'eliminar_cliente' cliente.id %} method="POST">
+    {% csrf_token %}
+   <p>Confirma el borrado de {{cliente}} </p>
+   <button>Confirmar</button> 
+</form>
+{% endblock contenido %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>Modificar cliente</title>
+{% endblock  %}
+
+{% block h1_header %}
+Modificar cliente
+{% endblock h1_header %}
+
+{% block contenido %}
+<form action={% url 'modificar_cliente' cliente.id %} method="POST">
+    {% csrf_token %}
+   <table>
+     {{form}}
+   </table>
+   <button>Modificar</button> 
+</form>
+{% endblock contenido %}

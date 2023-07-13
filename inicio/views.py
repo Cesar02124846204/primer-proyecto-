@@ -5,40 +5,11 @@ from django.template import Template, Context, loader
 from inicio.models import Cliente
 from django.shortcuts import render, redirect
 from inicio.form import Crearclienteformulario, buscarclienteformulario, modificarclienteformulario
-# v1
-# def inicio(request):
-#     return  HttpResponse("hola soy tu inicio")
-# v2
-# def inicio(request):
-#     archivo= open(r"C:\Users\cessa\OneDrive\Escritorio\mi_primer_django\templates\inicio.html", "r")
-#     template= Template (archivo.read())
-#     archivo.close()
-#     segundos = datetime.now().second
-#     diccionario={
-#         "mensaje": "este es el mensaje de inicio",
-#         "segundos" : segundos ,
-#         "segundos_par": segundos%2 == 0 ,
-#         "segundo_redondo":segundos %10 == 0 ,
-#         "listado_segundos": list(range(25))
-#     }
-#     contexto=Context(diccionario)
-#     renderizar_template= template.render(contexto)
-#     return HttpResponse(renderizar_template)
-# v3
-# def inicio(request):
-#     template= loader.get_template("inicio.html")
-#     segundos = datetime.now().second
-#     diccionario={
-#         "mensaje": "este es el mensaje de inicio",
-#         "segundos" : segundos ,
-#         "segundos_par": segundos%2 == 0 ,
-#         "segundo_redondo":segundos %10 == 0 ,
-#         "listado_segundos": list(range(25))
-#     }
-    
-#     renderizar_template= template.render(diccionario)
-#     return HttpResponse(renderizar_template)
-# v4
+from django.views.generic.edit import CreateView, UpdateView,DeleteView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.urls import reverse_lazy
+
 def inicio(request):
     return render(request,"inicio/inicio.html")
 def prueba(request):
@@ -81,69 +52,36 @@ def saludo(request):
 
 def bienvenido(request, nombre , apellido):
     return HttpResponse(f"bienvenido {nombre.title()}, {apellido.title()}")
-#v1
-# def crear_perro(request, nombre , edad):
-#     template= loader.get_template("crear_perro.html")
-#     perro= Perro(nombre= nombre, edad= edad)
-#     perro.save()
-    
-#     diccionario={
-#         "perro": perro
-#     }
-#     renderizar_template= template.render(diccionario)
-#     return HttpResponse(renderizar_template)
 
-def crear_cliente(request):
-    # print(request.POST)
-    
-    if request.method == "POST":
-        formulario = Crearclienteformulario(request.POST)
-        if formulario.is_valid():
-            info= formulario.cleaned_data
-            cliente= Cliente (nombre=info["nombre"], edad=info["edad"], nacionalidad=info["nacionalidad"])
-            cliente.save()
-            
-            return redirect( "lista_de_clientes")
-        else:
-            return render(request, "inicio/crear_cliente.html", {"formulario": formulario})
             
             
     formulario = Crearclienteformulario()
     return render(request, "inicio/crear_cliente.html",  {"formulario": formulario})
 
-def lista_de_clientes(request):
-     formulario=buscarclienteformulario(request.GET)
-     if formulario.is_valid():
-            buscar_nombre= formulario.cleaned_data["nombre"]
-            listado_de_clientes= Cliente.objects.filter(nombre__icontains=buscar_nombre)
-     
-     formulario=buscarclienteformulario()
-     print(buscar_nombre)
-     return render(request, "inicio/lista_de_clientes.html",{"formulario": formulario,"clientes": listado_de_clientes})
 
-def eliminar_cliente(request, cliente_id):
+class CrearCliente(CreateView):
+    model= Cliente
+    template_name= "inicio/CBV/crear_cliente_CBV.html"
+    fields= ["nombre", "edad", "nacionalidad", "descripcion"]
+    success_url= reverse_lazy("inicio:lista_de_clientes")
     
-    cliente= Cliente.objects.get(id=cliente_id)
-    cliente.delete()
-   
-    return redirect( "lista_de_clientes") 
+class Listaclientes(ListView):
+    model = Cliente
+    template_name = "inicio/CBV/lista_de_cliente_CBV.html"
+    context_object_name="clientes"
+    
+class ModificarCliente(UpdateView):
+    model = Cliente
+    template_name = "inicio/CBV/modificar_cliente_CBV.html"
+    fields= ["nombre", "edad", "nacionalidad", "descripcion"]
+    success_url= reverse_lazy("lista_de_clientes")
 
-def modificar_cliente(request, cliente_id):
-    cliente_a_modificar= Cliente.objects.get(id=cliente_id)
-   
-    if request.method == "POST":
-        formulario= modificarclienteformulario(request.POST)
-        if formulario.is_valid():
-            info= formulario.cleaned_data
-            cliente_a_modificar.nombre= info ["nombre"]
-            cliente_a_modificar.edad= info ["edad"]
-            cliente_a_modificar.nacionalidad= info ["nacionalidad"]
-            cliente_a_modificar.save()
-            return redirect("lista_de_clientes")
-       
-        else:
-            return render(request, "inicio/modificar_cliente.html" , {"formulario": formulario})
-    initial_data={"nombre": cliente_a_modificar.nombre, "edad": cliente_a_modificar.edad, "nacionalidad":cliente_a_modificar.nacionalidad}
-    formulario= modificarclienteformulario(initial= initial_data)
+class Eliminarcliente(DeleteView):
+    model = Cliente
+    template_name = "inicio/CBV/eliminar_cliente_CBV.html"
+    success_url= reverse_lazy("lista_de_clientes")
     
-    return render(request, "inicio/modificar_cliente.html",{"formulario": formulario})
+class Descripciondelcliente(DetailView):
+    model = Cliente
+    template_name = "inicio/CBV/descripcion_del_cliente_CBV.html"
+    

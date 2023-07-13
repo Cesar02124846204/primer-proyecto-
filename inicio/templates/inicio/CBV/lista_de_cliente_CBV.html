@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>clientes</title>
+{% endblock  %}
+
+{% block h1_header %}
+lista de clientes
+{% endblock h1_header %}
+
+{% block contenido %}
+<button>
+    <a class="navbar-brand" href={% url 'craer_cliente' %}>crear cliente</a>
+</button>
+<form action="" method="get">
+    {{form}}
+    
+</form>
+{% if  clientes%}
+{% for cliente in clientes %}
+<li>
+    
+    {{cliente}}
+    <button>
+        <a class="navbar-brand"  href={% url 'eliminar_cliente' cliente.id %}>Eliminar</a>
+
+    </button>
+    <button>
+        <a class="navbar-brand"  href={% url 'modificar_cliente' cliente.id %}>modificar
+
+    </button>
+    <button>
+        <href= class="navbar-brand" {% url 'descripcion_del_cliente' cliente.id %}>Ver mas
+
+    </button>
+</li>
+{% endfor %}
+{% else %}
+<p>no existe ese cliente</p>
+{% endif %}
+
+{% endblock contenido %}

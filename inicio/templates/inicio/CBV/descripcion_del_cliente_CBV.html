@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>cliente</title>
+{% endblock  %}
+
+{% block h1_header %}
+{{cliente.nombre}}
+{% endblock h1_header %}
+
+{% block contenido %}
+<li>Edad: {{cliente.edad}}</li>
+<li>Nacionalidad {{cliente.nacionalidad}} </li>
+<li>Descripcion: {{cliente.descriocion}} </li>
+{% endblock contenido %}
