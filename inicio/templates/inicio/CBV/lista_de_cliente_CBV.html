@@ -10,12 +10,13 @@ lista de clientes
 
 {% block contenido %}
 <button>
-    <a class="navbar-brand" href={% url 'craer_cliente' %}>crear cliente</a>
+    <a class="navbar-brand" href={% url 'craer_cliente' %}>Crear cliente</a>
 </button>
 <form action="" method="get">
-    {{form}}
-    
+    {{formulario}}
+    <button>Buscar</button>
 </form>
+
 {% if  clientes%}
 {% for cliente in clientes %}
 <li>

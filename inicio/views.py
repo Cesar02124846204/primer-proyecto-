@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 def inicio(request):
     return render(request,"inicio/inicio.html")
+def acercademi(request):
+    return render(request,"inicio/acerca_de_mi.html")
 def prueba(request):
     
     
@@ -64,7 +66,7 @@ class CrearCliente(CreateView,LoginRequiredMixin):
     model= Cliente
     template_name= "inicio/CBV/crear_cliente_CBV.html"
     fields= ["nombre", "edad", "nacionalidad", "descripcion"]
-    success_url= reverse_lazy("inicio:lista_de_clientes")
+    success_url= reverse_lazy("lista_de_clientes")
     
 class Listaclientes(ListView):
     # model = Cliente
@@ -73,20 +75,23 @@ class Listaclientes(ListView):
     model =Cliente
     template_name = "inicio/CBV/lista_de_cliente_CBV.html"
     context_object_name = 'clientes'
-    fields= ["nombre"]
-    
     def get_queryset(self):
-        listado_de_clientes= []
+        listado_de_perros = []
         formulario = buscarclienteformulario(self.request.GET)
         if formulario.is_valid():
             nombre_a_buscar = formulario.cleaned_data['nombre']
-            listado_de_clientes = Cliente.objects.filter(nombre__icontains=nombre_a_buscar)
-        return listado_de_clientes
+            listado_de_perros = Cliente.objects.filter(nombre__icontains=nombre_a_buscar)
+        return listado_de_perros
+    
     
     def get_context_data(self, **kwargs):
         contexto = super().get_context_data(**kwargs)
         contexto['formulario'] = buscarclienteformulario()
         return contexto
+    
+    
+    
+   
     
     
 class ModificarCliente(LoginRequiredMixin,UpdateView):
