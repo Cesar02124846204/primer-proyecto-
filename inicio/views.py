@@ -26,15 +26,15 @@ def prueba(request):
     }
     return render(request, "inicio/prueba.html", diccionario)
 
-    segundos = datetime.now().second
-    diccionario={
-        "mensaje": "este es el mensaje de inicio",
-        "segundos" : segundos ,
-        "segundos_par": segundos%2 == 0 ,
-        "segundo_redondo":segundos %10 == 0 ,
-        "listado_segundos": list(range(25))
-    }
-    return render(request, "inicio/prueba.html", diccionario)
+    # segundos = datetime.now().second
+    # diccionario={
+    #     "mensaje": "este es el mensaje de inicio",
+    #     "segundos" : segundos ,
+    #     "segundos_par": segundos%2 == 0 ,
+    #     "segundo_redondo":segundos %10 == 0 ,
+    #     "listado_segundos": list(range(25))
+    # }
+    # return render(request, "inicio/prueba.html", diccionario)
 
 
 
@@ -56,8 +56,8 @@ def bienvenido(request, nombre , apellido):
 
             
             
-    formulario = Crearclienteformulario()
-    return render(request, "inicio/crear_cliente.html",  {"formulario": formulario})
+    # formulario = Crearclienteformulario()
+    # return render(request, "inicio/crear_cliente.html",  {"formulario": formulario})
 
 
 class CrearCliente(CreateView,LoginRequiredMixin):
@@ -67,9 +67,27 @@ class CrearCliente(CreateView,LoginRequiredMixin):
     success_url= reverse_lazy("inicio:lista_de_clientes")
     
 class Listaclientes(ListView):
-    model = Cliente
+    # model = Cliente
+    # template_name = "inicio/CBV/lista_de_cliente_CBV.html"
+    # context_object_name="clientes"
+    model =Cliente
     template_name = "inicio/CBV/lista_de_cliente_CBV.html"
-    context_object_name="clientes"
+    context_object_name = 'clientes'
+    fields= ["nombre"]
+    
+    def get_queryset(self):
+        listado_de_clientes= []
+        formulario = buscarclienteformulario(self.request.GET)
+        if formulario.is_valid():
+            nombre_a_buscar = formulario.cleaned_data['nombre']
+            listado_de_clientes = Cliente.objects.filter(nombre__icontains=nombre_a_buscar)
+        return listado_de_clientes
+    
+    def get_context_data(self, **kwargs):
+        contexto = super().get_context_data(**kwargs)
+        contexto['formulario'] = buscarclienteformulario()
+        return contexto
+    
     
 class ModificarCliente(LoginRequiredMixin,UpdateView):
     model = Cliente

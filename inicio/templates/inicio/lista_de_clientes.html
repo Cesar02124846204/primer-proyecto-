@@ -12,9 +12,9 @@ lista de clientes
 <button>
     <a class="navbar-brand" href={% url 'craer_cliente' %}>crear cliente</a>
 </button>
-<form action="" method="get">
+<form action={% url 'clientes' %}method="get">
     {{formulario}}
-    <button>buscar</button>
+    <button>Buscar</button>
 </form>
 {% if  clientes%}
 {% for cliente in clientes %}

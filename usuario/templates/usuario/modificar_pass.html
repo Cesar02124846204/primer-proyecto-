@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title_head %}
+<title>modificar pass</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+modificar pass
+{% endblock h1_header %}
+
+{% block contenido %}
+<form action={% url 'usuario:modificar_pass' %} method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <table>
+        {{form}}
+    </table>
+    <button>Cambiar Container</button>
+{% endblock contenido %}
