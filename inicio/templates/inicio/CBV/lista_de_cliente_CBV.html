@@ -31,8 +31,7 @@ lista de clientes
 
     </button>
     <button>
-        <href= class="navbar-brand" {% url 'descripcion_del_cliente' cliente.id %}>Ver mas
-
+        <a class="navbar-brand"  href={% url 'descripcion_del_cliente' cliente.id %}>Ver mas</a>
     </button>
 </li>
 {% endfor %}

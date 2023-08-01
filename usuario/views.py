@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from usuario.form import MiFormalarioDeCreacionDeUsarios, MiFormularioDeEdicionDeDatosDeUsuario
 from django.urls import reverse_lazy
 from usuario.models import InfoExtra
+from django.views.generic.detail import DetailView
 
 
 
@@ -71,3 +72,9 @@ def edicion_de_perfil(request):
 class ModificarPass(LoginRequiredMixin,PasswordChangeView):
     template_name= "usuario/modificar_pass.html"
     success_url = reverse_lazy('usuario:edicion_de_perfil')
+    
+    
+class PerfilDelUsario(DetailView):
+    model =InfoExtra
+    template_name = "usuario/perfil_del_cliente.html"
+    

@@ -13,8 +13,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 def inicio(request):
     return render(request,"inicio/inicio.html")
+
 def acercademi(request):
     return render(request,"inicio/acerca_de_mi.html")
+
 def prueba(request):
     
     
