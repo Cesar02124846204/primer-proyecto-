@@ -6,6 +6,7 @@ class Cliente(models.Model):
     edad= models.IntegerField()
     nacionalidad = models.CharField(max_length=20, blank=True, null=True)
     descripcion= RichTextField(null=True)
+    # imagen = models.ImageField(upload_to='imagen', null=True, blank=True)
     
     def __str__(self):
         return f"Cliente: {self.nombre} - Edad : {self.edad} - Nacionalidad: {self.nacionalidad}"

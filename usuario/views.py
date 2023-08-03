@@ -74,7 +74,7 @@ class ModificarPass(LoginRequiredMixin,PasswordChangeView):
     success_url = reverse_lazy('usuario:edicion_de_perfil')
     
     
-class PerfilDelUsario(DetailView):
-    model =InfoExtra
-    template_name = "usuario/perfil_del_cliente.html"
+# class PerfilDelUsario(DetailView):
+#     model =InfoExtra
+#     template_name = "usuario/perfil_del_cliente.html"
     

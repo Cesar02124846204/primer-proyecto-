@@ -17,8 +17,9 @@ class MiFormularioDeEdicionDeDatosDeUsuario(UserChangeForm):
     email = forms.EmailField()
     first_name = forms.CharField(label='Nombre', max_length=20)    
     last_name = forms.CharField(label='Apellido', max_length=20)  
+    edad= forms.CharField(label='edad', max_length=20) 
     avatar = forms.ImageField(required=False)  
     
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name',"avatar"]
+        fields = ['email', 'first_name', 'last_name',"edad","avatar"]

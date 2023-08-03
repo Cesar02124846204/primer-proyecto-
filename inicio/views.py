@@ -99,7 +99,7 @@ class Listaclientes(ListView):
 class ModificarCliente(LoginRequiredMixin,UpdateView):
     model = Cliente
     template_name = "inicio/CBV/modificar_cliente_CBV.html"
-    fields= ["nombre", "edad", "nacionalidad", "descripcion"]
+    fields= ["nombre", "edad", "nacionalidad", "descripcion",]
     success_url= reverse_lazy("lista_de_clientes")
 
 class Eliminarcliente(LoginRequiredMixin,DeleteView):
