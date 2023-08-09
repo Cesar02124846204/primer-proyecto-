@@ -4,7 +4,7 @@ from datetime import datetime
 from django.template import Template, Context, loader
 from inicio.models import Cliente
 from django.shortcuts import render, redirect
-from inicio.form import Crearclienteformulario, buscarclienteformulario, modificarclienteformulario
+from inicio.form import Crearclienteformulario, buscarclienteformulario, modificarclienteformulario, clienteformulariobase
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -67,7 +67,7 @@ def bienvenido(request, nombre , apellido):
 class CrearCliente(CreateView,LoginRequiredMixin):
     model= Cliente
     template_name= "inicio/CBV/crear_cliente_CBV.html"
-    fields= ["nombre", "edad", "nacionalidad", "descripcion"]
+    fields= ["nombre", "edad", "nacionalidad", "descripcion","imagen","fecha"]
     success_url= reverse_lazy("lista_de_clientes")
     
 class Listaclientes(ListView):
@@ -99,8 +99,17 @@ class Listaclientes(ListView):
 class ModificarCliente(LoginRequiredMixin,UpdateView):
     model = Cliente
     template_name = "inicio/CBV/modificar_cliente_CBV.html"
-    fields= ["nombre", "edad", "nacionalidad", "descripcion",]
+    fields= ["nombre", "edad", "nacionalidad", "descripcion","imagen","fecha"]
+    # form_class = clienteformulariobase
     success_url= reverse_lazy("lista_de_clientes")
+    
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        if form.cleaned_data['imagen']:
+            instance.imagen = form.cleaned_data['imagen']
+        instance.save()
+        return super().form_valid(form)
+    
 
 class Eliminarcliente(LoginRequiredMixin,DeleteView):
     model = Cliente
