@@ -59,12 +59,17 @@ def edicion_de_perfil(request):
             avatar = formulario.cleaned_data.get('avatar')
             if avatar:
                 info_extra_user.avatar = avatar
-                info_extra_user.save()
+                
+            edad = formulario.cleaned_data.get('edad')
+            if edad:
+                info_extra_user.edad = edad
+            
+            info_extra_user.save()
             
             formulario.save()
             return redirect('inicio')
     else:
-        formulario = MiFormularioDeEdicionDeDatosDeUsuario(initial={'avatar': info_extra_user.avatar}, instance=request.user)
+        formulario = MiFormularioDeEdicionDeDatosDeUsuario(initial={'avatar': info_extra_user.avatar, 'edad': info_extra_user.edad}, instance=request.user)
         
     return render(request, 'usuario/edicion_de_perfil.html', {'formulario': formulario})
 
