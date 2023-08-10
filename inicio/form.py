@@ -21,7 +21,8 @@ class Crearclienteformulario(clienteformulariobase):
 class modificarclienteformulario (clienteformulariobase):
    ...
    
-   
 class buscarclienteformulario(forms.Form):
     nombre= forms.CharField(max_length=20,required= False)
+    
+
    

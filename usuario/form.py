@@ -23,3 +23,7 @@ class MiFormularioDeEdicionDeDatosDeUsuario(UserChangeForm):
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name',"edad","avatar"]
+    
+
+class buscarUsuarioformulario(forms.Form):
+    first_name = forms.CharField(label='Nombre', max_length=20)    

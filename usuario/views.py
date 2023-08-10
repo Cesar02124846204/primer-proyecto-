@@ -4,9 +4,10 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from usuario.form import MiFormalarioDeCreacionDeUsarios, MiFormularioDeEdicionDeDatosDeUsuario
+from usuario.form import MiFormalarioDeCreacionDeUsarios, MiFormularioDeEdicionDeDatosDeUsuario,buscarUsuarioformulario
+from django.views.generic.list import ListView
 from django.urls import reverse_lazy
-from usuario.models import InfoExtra
+from usuario.models import InfoExtra, User
 from django.views.generic.detail import DetailView
 
 
@@ -77,6 +78,23 @@ def edicion_de_perfil(request):
 class ModificarPass(LoginRequiredMixin,PasswordChangeView):
     template_name= "usuario/modificar_pass.html"
     success_url = reverse_lazy('usuario:edicion_de_perfil')
+    
+    
+class perfildelusario(ListView):
+    # model = Cliente
+    # template_name = "inicio/CBV/lista_de_cliente_CBV.html"
+    # context_object_name="clientes"
+    model =InfoExtra
+    template_name = "usuario/perfil_del_usuario.html"
+    context_object_name = 'usuario'
+    def get_queryset(self):
+        listado_de_usuarios= []
+        formulario = buscarUsuarioformulario(self.request.GET)
+        if formulario.is_valid():
+            nombre_a_buscar = formulario.cleaned_data['Nombre']
+            users = User.objects.filter(first_name__icontains=nombre_a_buscar)
+            listado_de_usuarios = InfoExtra.objects.filter(user_id__in=users.values("id"))
+        return listado_de_usuarios
     
     
 # class PerfilDelUsario(DetailView):

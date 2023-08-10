@@ -78,12 +78,12 @@ class Listaclientes(ListView):
     template_name = "inicio/CBV/lista_de_cliente_CBV.html"
     context_object_name = 'clientes'
     def get_queryset(self):
-        listado_de_perros = []
+        listado_de_clientes= []
         formulario = buscarclienteformulario(self.request.GET)
         if formulario.is_valid():
             nombre_a_buscar = formulario.cleaned_data['nombre']
-            listado_de_perros = Cliente.objects.filter(nombre__icontains=nombre_a_buscar)
-        return listado_de_perros
+            listado_de_clientes = Cliente.objects.filter(nombre__icontains=nombre_a_buscar)
+        return listado_de_clientes
     
     
     def get_context_data(self, **kwargs):

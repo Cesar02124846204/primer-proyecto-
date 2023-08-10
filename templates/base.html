@@ -30,7 +30,7 @@
                 <img src={{request.user.infoextra.avatar.url}} alt="" height='40px'>
                 {% endif %}
                 {% comment %} <a class="navbar-brand" href={% url 'usuario:perfil_del_cliente' %}>{{request.user.username}}</a> {% endcomment %}
-                <a class="navbar-brand" href={% url 'usuario:edicion_de_perfil' %}>{{request.user.username}}</a>
+                <a class="navbar-brand" href={% url 'usuario:perfil_del_usuario' %}>{{request.user.username}}</a>
                 <a class="navbar-brand" href={% url 'usuario:logout' %}>logout</a>
                 {% else %}
                 <a class="navbar-brand" href={% url 'usuario:login' %}>login</a>

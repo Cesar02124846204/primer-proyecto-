@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+
+{% block  title_head %}
+<title>usario</title>
+{% endblock  %}
+
+{% block h1_header %}
+    {{request.user.username}}
+{% endblock h1_header %}
+
+{% block contenido %}
+
+    <li>
+        <p>Nombre de usuario: {{request.user.username}} </p>
+        <p>Nombre: {{request.user.first_name}} </p>
+        <p>Apellido: {{request.user.last_name}}</p>
+        <button>
+            <a class="navbar-brand" href={% url "usuario:edicion_de_perfil" %}>editar usario</a>
+        </button>
+    </li>    
+ 
+    
+{% endblock  %}
+
